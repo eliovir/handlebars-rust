@@ -673,13 +673,12 @@
         <span class='ident'>path_id</span> <span class='op'>=</span> { <span class='ident'>path_ident</span><span class='op'>+</span> }
         <span class='ident'>path_num_id</span> <span class='op'>=</span> { [<span class='string'>&#39;0&#39;</span>..<span class='string'>&#39;9&#39;</span>]<span class='op'>+</span> }
         <span class='ident'>path_raw_id</span> <span class='op'>=</span> { <span class='ident'>path_ident</span><span class='op'>*</span> }
-        <span class='ident'>path_this</span> <span class='op'>=</span> { [<span class='string'>&quot;this&quot;</span>] }
         <span class='ident'>path_sep</span> <span class='op'>=</span> _{ [<span class='string'>&quot;/&quot;</span>] <span class='op'>|</span> [<span class='string'>&quot;.&quot;</span>] }
         <span class='ident'>path_up</span> <span class='op'>=</span> { [<span class='string'>&quot;..&quot;</span>] }
         <span class='ident'>path_var</span> <span class='op'>=</span> { <span class='ident'>path_id</span> }
         <span class='ident'>path_key</span> <span class='op'>=</span> { [<span class='string'>&quot;[&quot;</span>] ~ ([<span class='string'>&quot;\&quot;&quot;</span>]<span class='op'>|</span>[<span class='string'>&quot;&#39;&quot;</span>])? ~ <span class='ident'>path_raw_id</span> ~ ([<span class='string'>&quot;\&quot;&quot;</span>]<span class='op'>|</span>[<span class='string'>&quot;&#39;&quot;</span>])? ~ [<span class='string'>&quot;]&quot;</span>] }
         <span class='ident'>path_idx</span> <span class='op'>=</span> { [<span class='string'>&quot;[&quot;</span>] ~ <span class='ident'>path_num_id</span> ~ [<span class='string'>&quot;]&quot;</span>]}
-        <span class='ident'>path_item</span> <span class='op'>=</span> _{ <span class='ident'>path_this</span><span class='op'>|</span><span class='ident'>path_up</span><span class='op'>|</span><span class='ident'>path_var</span> }
+        <span class='ident'>path_item</span> <span class='op'>=</span> _{ <span class='ident'>path_up</span><span class='op'>|</span><span class='ident'>path_var</span> }
         <span class='ident'>path</span> <span class='op'>=</span> _{ [<span class='string'>&quot;./&quot;</span>]? ~ <span class='ident'>path_item</span> ~ ((<span class='ident'>path_sep</span> ~ <span class='ident'>path_item</span>) <span class='op'>|</span> (<span class='ident'>path_sep</span>? ~  (<span class='ident'>path_key</span> <span class='op'>|</span> <span class='ident'>path_idx</span>)))<span class='op'>*</span> ~ <span class='ident'>eoi</span> }
     }
 }
@@ -794,13 +793,12 @@
         <span class='ident'>path_id</span> <span class='op'>=</span> { <span class='ident'>path_ident</span><span class='op'>+</span> }
         <span class='ident'>path_num_id</span> <span class='op'>=</span> { [<span class='string'>&#39;0&#39;</span>..<span class='string'>&#39;9&#39;</span>]<span class='op'>+</span> }
         <span class='ident'>path_raw_id</span> <span class='op'>=</span> { <span class='ident'>path_ident</span><span class='op'>*</span> }
-        <span class='ident'>path_this</span> <span class='op'>=</span> { [<span class='string'>&quot;this&quot;</span>] }
         <span class='ident'>path_sep</span> <span class='op'>=</span> _{ [<span class='string'>&quot;/&quot;</span>] <span class='op'>|</span> [<span class='string'>&quot;.&quot;</span>] }
         <span class='ident'>path_up</span> <span class='op'>=</span> { [<span class='string'>&quot;..&quot;</span>] }
         <span class='ident'>path_var</span> <span class='op'>=</span> { <span class='ident'>path_id</span> }
         <span class='ident'>path_key</span> <span class='op'>=</span> { [<span class='string'>&quot;[&quot;</span>] ~ ([<span class='string'>&quot;\&quot;&quot;</span>]<span class='op'>|</span>[<span class='string'>&quot;&#39;&quot;</span>])? ~ <span class='ident'>path_raw_id</span> ~ ([<span class='string'>&quot;\&quot;&quot;</span>]<span class='op'>|</span>[<span class='string'>&quot;&#39;&quot;</span>])? ~ [<span class='string'>&quot;]&quot;</span>] }
         <span class='ident'>path_idx</span> <span class='op'>=</span> { [<span class='string'>&quot;[&quot;</span>] ~ <span class='ident'>path_num_id</span> ~ [<span class='string'>&quot;]&quot;</span>]}
-        <span class='ident'>path_item</span> <span class='op'>=</span> _{ <span class='ident'>path_this</span><span class='op'>|</span><span class='ident'>path_up</span><span class='op'>|</span><span class='ident'>path_var</span> }
+        <span class='ident'>path_item</span> <span class='op'>=</span> _{ <span class='ident'>path_up</span><span class='op'>|</span><span class='ident'>path_var</span> }
         <span class='ident'>path</span> <span class='op'>=</span> _{ [<span class='string'>&quot;./&quot;</span>]? ~ <span class='ident'>path_item</span> ~ ((<span class='ident'>path_sep</span> ~ <span class='ident'>path_item</span>) <span class='op'>|</span> (<span class='ident'>path_sep</span>? ~  (<span class='ident'>path_key</span> <span class='op'>|</span> <span class='ident'>path_idx</span>)))<span class='op'>*</span> ~ <span class='ident'>eoi</span> }
     }
 }
@@ -1025,14 +1023,16 @@
 
 <span class='attribute'>#[<span class='ident'>test</span>]</span>
 <span class='kw'>fn</span> <span class='ident'>test_path</span>() {
-    <span class='kw'>let</span> <span class='ident'>s</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='string'>&quot;a.b.c.d&quot;</span>,
+    <span class='kw'>let</span> <span class='ident'>s</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='string'>&quot;a&quot;</span>,
+                 <span class='string'>&quot;a.b.c.d&quot;</span>,
                  <span class='string'>&quot;a[0][1][2]&quot;</span>,
                  <span class='string'>&quot;a[\&quot;abc\&quot;]&quot;</span>,
                  <span class='string'>&quot;a/v/c.d.s&quot;</span>,
                  <span class='string'>&quot;a[0]/b/c/../d&quot;</span>,
                  <span class='string'>&quot;a[\&quot;bbc\&quot;]/b/c/../d&quot;</span>,
                  <span class='string'>&quot;../a/b[0][1]&quot;</span>,
-                 <span class='string'>&quot;./this[0][1]/this/../a&quot;</span>];
+                 <span class='string'>&quot;./this[0][1]/this/../a&quot;</span>,
+                 <span class='string'>&quot;./this_name&quot;</span>];
     <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='ident'>s</span>.<span class='ident'>iter</span>() {
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>rdp</span> <span class='op'>=</span> <span class='ident'>Rdp</span>::<span class='ident'>new</span>(<span class='ident'>StringInput</span>::<span class='ident'>new</span>(<span class='ident'>i</span>));
         <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>rdp</span>.<span class='ident'>path</span>());
